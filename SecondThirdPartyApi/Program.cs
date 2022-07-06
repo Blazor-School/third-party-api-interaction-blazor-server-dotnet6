@@ -6,7 +6,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-var summaries = new[]
+string[] summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };

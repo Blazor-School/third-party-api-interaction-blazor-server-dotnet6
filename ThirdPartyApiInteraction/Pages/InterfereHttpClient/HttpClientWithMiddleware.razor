@@ -1,7 +1,7 @@
-﻿@page "/named-http-client"
+﻿@page "/http-client-with-middleware"
 @inject IHttpClientFactory HttpClientFactory
 
-<h3>NamedHttpClient</h3>
+<h3>HttpClientWithMiddleware</h3>
 <div>API result: @ApiResult</div>
 
 @code {
@@ -9,7 +9,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var httpClient = HttpClientFactory.CreateClient("Second API");
+        var httpClient = HttpClientFactory.CreateClient("HttpClient with Middleware");
         var response = await httpClient.GetAsync("/weatherforecast");
         ApiResult = await response.Content.ReadAsStringAsync();
     }

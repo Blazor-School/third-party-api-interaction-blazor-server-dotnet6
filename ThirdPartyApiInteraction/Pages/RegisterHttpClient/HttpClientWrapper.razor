@@ -1,0 +1,12 @@
+﻿@page "/http-client-wrapper"
+@using ThirdPartyApiInteraction.Utils
+@inject HttpClientWrapperClass HttpClientWrapperClass
+
+<h3>HttpClientWrapper</h3>
+<div>API result: @ApiResult</div>
+
+@code {
+    public string ApiResult { get; set; } = "";
+
+    protected override async Task OnInitializedAsync() => ApiResult = await HttpClientWrapperClass.GetWeatherDataAsync();
+}
