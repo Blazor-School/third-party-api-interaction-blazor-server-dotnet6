@@ -1,0 +1,16 @@
+﻿@page "/named-httpclient"
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>NamedHttpClient</h3>
+<div>API result: @ApiResult</div>
+
+@code {
+    public string ApiResult { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("Second API");
+        var response = await httpClient.GetAsync("/weatherforecast");
+        ApiResult = await response.Content.ReadAsStringAsync();
+    }
+}
