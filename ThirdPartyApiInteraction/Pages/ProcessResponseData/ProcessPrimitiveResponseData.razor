@@ -1,0 +1,24 @@
+﻿@page "/process-primitive-response-data"
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>ProcessPrimitiveResponseData</h3>
+<div>Data Received: @DataReceived</div>
+
+@code {
+    public string DataReceived { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("First API");
+        var response = await httpClient.GetAsync("example/ReturnPrimitiveData");
+
+        if(response.IsSuccessStatusCode)
+        {
+            DataReceived = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            DataReceived = "Failed";
+        }
+    }
+}

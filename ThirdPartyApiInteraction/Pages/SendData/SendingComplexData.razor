@@ -1,0 +1,29 @@
+﻿@page "/sending-complex-data"
+@using ThirdPartyApiInteraction.Models
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>SendingComplexData</h3>
+<div>@Status</div>
+
+@code {
+    public string Status { get; set; } = "Sending...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("First API");
+        var data = new ExampleClass()
+        {
+            ExampleString = "Blazor School"
+        };
+        var message = await httpClient.PostAsJsonAsync<ExampleClass>("example/ProcessComplexData", data);
+
+        if (message is not null && message.IsSuccessStatusCode)
+        {
+            Status = "Success";
+        }
+        else
+        {
+            Status = "Failed";
+        }
+    }
+}

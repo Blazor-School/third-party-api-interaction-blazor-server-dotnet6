@@ -1,0 +1,25 @@
+﻿@page "/sending-primitive-data"
+@using System.Text
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>SendingPrimitiveData</h3>
+<div>@Status</div>
+
+@code {
+    public string Status { get; set; } = "Sending...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("First API");
+        var message = await httpClient.PostAsync("example/ProcessPrimitiveData", new StringContent("\"Blazor School\"", Encoding.UTF8, "application/json"));
+
+        if (message is not null && message.IsSuccessStatusCode)
+        {
+            Status = "Success";
+        }
+        else
+        {
+            Status = "Failed";
+        }
+    }
+}

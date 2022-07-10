@@ -1,0 +1,41 @@
+﻿@page "/sending-stream"
+@using ThirdPartyApiInteraction.Models
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>SendingStream</h3>
+<EditForm Model="FormModel" OnSubmit="SubmitFormAsync">
+    <InputFile class="form-control" OnChange="FileChanged" />
+    <button class="btn btn-primary">Submit</button>
+</EditForm>
+<div>@Status</div>
+
+@code {
+    public string Status { get; set; } = "Waiting...";
+    public ExampleFormModel FormModel { get; set; } = new();
+
+    public void FileChanged(InputFileChangeEventArgs args)
+    {
+        FormModel.ExampleFile = args.File;
+    }
+
+    public async Task SubmitFormAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("First API");
+        using var formDataContent = new MultipartFormDataContent();
+        using var stream = FormModel.ExampleFile.OpenReadStream(long.MaxValue);
+        using var streamContent = new StreamContent(stream);
+        streamContent.Headers.ContentType = new(FormModel.ExampleFile.ContentType);
+        formDataContent.Add(streamContent, "FileStream", FormModel.ExampleFile.Name);
+        Status = "Sending...";
+        var message = await httpClient.PostAsync("example/ProcessStreamdata", formDataContent);
+
+        if (message is not null && message.IsSuccessStatusCode)
+        {
+            Status = "Success";
+        }
+        else
+        {
+            Status = "Failed";
+        }
+    }
+}

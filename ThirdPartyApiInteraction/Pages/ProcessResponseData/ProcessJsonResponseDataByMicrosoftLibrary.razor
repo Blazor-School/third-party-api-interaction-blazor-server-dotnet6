@@ -1,0 +1,16 @@
+﻿@page "/process-json-response-data-by-microsoft-library"
+@using ThirdPartyApiInteraction.Models
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>ProcessJsonResponseDataByMicrosoftLibrary</h3>
+<div>Data Received: @ExampleInstance.ExampleString</div>
+
+@code {
+    public ExampleClass ExampleInstance { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("First API");
+        ExampleInstance = await httpClient.GetFromJsonAsync<ExampleClass>("example/ReturnComplexData") ?? new();
+    }
+}

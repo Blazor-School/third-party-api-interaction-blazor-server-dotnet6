@@ -1,0 +1,24 @@
+﻿@page "/sending-data-via-url"
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>SendingDataViaUrl</h3>
+<div>@Status</div>
+
+@code {
+    public string Status { get; set; } = "Sending...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = HttpClientFactory.CreateClient("First API");
+        var message = await httpClient.GetAsync($"example/ProcessPrimitiveUrlData?data=Blazor School");
+
+        if (message is not null && message.IsSuccessStatusCode)
+        {
+            Status = "Success";
+        }
+        else
+        {
+            Status = "Failed";
+        }
+    }
+}
