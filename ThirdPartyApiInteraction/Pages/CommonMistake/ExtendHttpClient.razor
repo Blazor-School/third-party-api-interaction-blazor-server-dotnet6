@@ -1,0 +1,26 @@
+﻿@page "/extend-http-client"
+
+<h3>ExtendHttpClient</h3>
+<div>@((MarkupString)Log)</div>
+
+@code {
+    public string Log { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        foreach (int index in Enumerable.Range(1, 10))
+        {
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync("https://blazorschool.com");
+
+            if(response.IsSuccessStatusCode)
+            {
+                Log += $"Request {index} was sucessfully.<br/>";
+            }
+            else
+            {
+                Log += $"Request {index} was failed.<br/>";
+            }
+        }
+    }
+}
